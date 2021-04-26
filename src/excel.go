@@ -71,10 +71,10 @@ func main () {
 // excel添加图片操作
 func addImage(info AddImageParamsStruct, finishNotice chan int) (string, error) {
     defer (func() {
-        task_now++
-        if task_now == info.total_number {
-            finishNotice<-1
-        }
+       task_now++
+       if task_now == info.total_number {
+           finishNotice<-1
+       }
     })()
 
     width := info.width; pos := info.pos; height := info.height; path := info.path // 宽度、位置、高度、图片地址
@@ -83,10 +83,6 @@ func addImage(info AddImageParamsStruct, finishNotice chan int) (string, error) 
     rowMatch := regexp.MustCompile(`[a-zA-Z]+([0-9]+)`).FindAllStringSubmatch(pos, -1) // 行数
     colMatch := regexp.MustCompile(`([a-zA-Z])+[0-9]+`).FindAllStringSubmatch(pos, -1) // 列数
 
-    // 添加图片
-    if errAddPic := fileHandle.AddPicture(firstSheetName, pos, path, `{ "x_scale": 1,"y_scale": 1,"positioning": "absolute","x_offset": 1,"y_offset": 1}`) ; errAddPic != nil {
-        return "",&myError{"图片添加失败，"+"path："+path+"，pos："+pos}
-    }
     // 设置行高
     rowNumString := rowMatch[0][1]
     rowNum, errRowNum := strconv.Atoi(rowNumString) // 行号
@@ -105,6 +101,12 @@ func addImage(info AddImageParamsStruct, finishNotice chan int) (string, error) 
             return "",&myError{"行宽设置失败，pos："+pos+"，colNum："+colNum+"，width："+width}
         }
     }
+
+    // 添加图片
+    if errAddPic := fileHandle.AddPicture(firstSheetName, pos, path, `{ "x_scale": 1,"y_scale": 1,"positioning": "absolute","x_offset": 1,"y_offset": 1}`) ; errAddPic != nil {
+        return "",&myError{"图片添加失败，"+"path："+path+"，pos："+pos}
+    }
+
     return "完成", nil
 }
 
