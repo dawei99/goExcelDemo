@@ -35,7 +35,7 @@ func main () {
 
     var firstSheetName string = file.GetSheetMap()[1] // 工作薄名称
 
-    var addImageParam AddImageParamsStruct  // 需传递参数
+    var addImageParam AddImageParamsStruct // 需传递参数
     addImageParam.fileHandle = file
     addImageParam.firstSheetName = firstSheetName
     finishNoticeHandle := make(chan int) // 全部完成通知管道
@@ -49,6 +49,8 @@ func main () {
         posByte,_,_,errPos:=jsonparser.Get(value, "pos") ; pos := string(posByte) // 图片位置
         heightByte,_,_,_:=jsonparser.Get(value, "height") ; height := string(heightByte) // 单元格高度
         widthByte,_,_,_:=jsonparser.Get(value, "width") ; width := string(widthByte) // 单元格高度
+        xValue,_ := jsonparser.GetInt(value, "x")
+        yValue,_ := jsonparser.GetInt(value, "y")
         // 判断解析是否成功
         if errPath != nil || errPos != nil {
             return
@@ -58,6 +60,8 @@ func main () {
         addImageParam.height = height
         addImageParam.width = width
         addImageParam.total_number = total
+        addImageParam.x = xValue
+        addImageParam.y = yValue
         go addImage(addImageParam, finishNoticeHandle)
     })
     <-finishNoticeHandle // 等待任务完成
@@ -77,7 +81,7 @@ func addImage(info AddImageParamsStruct, finishNotice chan int) (string, error) 
        }
     })()
 
-    width := info.width; pos := info.pos; height := info.height; path := info.path // 宽度、位置、高度、图片地址
+    width := info.width; pos := info.pos; height := info.height; path := info.path; x := info.x; y := info.y // 宽度、位置、高度、图片地址
     firstSheetName := info.firstSheetName  // 工作薄名称
     fileHandle := info.fileHandle  // excel操作句柄
     rowMatch := regexp.MustCompile(`[a-zA-Z]+([0-9]+)`).FindAllStringSubmatch(pos, -1) // 行数
@@ -103,7 +107,7 @@ func addImage(info AddImageParamsStruct, finishNotice chan int) (string, error) 
     }
 
     // 添加图片
-    if errAddPic := fileHandle.AddPicture(firstSheetName, pos, path, `{ "x_scale": 1,"y_scale": 1,"positioning": "absolute","x_offset": 1,"y_offset": 1}`) ; errAddPic != nil {
+    if errAddPic := fileHandle.AddPicture(firstSheetName, pos, path, `{ "x_scale": 1,"y_scale": 1,"positioning": "absolute","x_offset": `+strconv.FormatInt(x, 10)+`,"y_offset": `+strconv.FormatInt(y, 10)+`}`) ; errAddPic != nil {
         return "",&myError{"图片添加失败，"+"path："+path+"，pos："+pos}
     }
 
@@ -129,6 +133,8 @@ type AddImageParamsStruct struct {
     pos string
     height string
     width string
+    x int64     // 左边距
+    y int64     // 上边距
 }
 
 // 抛出错误并停止运行
