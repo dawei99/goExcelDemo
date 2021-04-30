@@ -4,7 +4,7 @@
     打包命令：go build  -o dist/exec  excel.go
 
 效果图：
-![avatar](src/C976DEA8-5C5F-43E2-B544-87D4210559C9.png)
+![avatar](C976DEA8-5C5F-43E2-B544-87D4210559C9.png)
 
 参数：
 
