@@ -3,3 +3,4 @@
 !**/dist/.deep
 .idea/
 exec
+tmp.go

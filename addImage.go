@@ -73,7 +73,7 @@ func addImageHandle(info AddImageParams, finishNotice chan int) {
 
     // 添加图片
     if errAddPic := fileHandle.AddPicture(firstSheetName, pos, path, `{ "x_scale": 1,"y_scale": 1,"positioning": "absolute","x_offset": `+strconv.FormatInt(x, 10)+`,"y_offset": `+strconv.FormatInt(y, 10)+`}`) ; errAddPic != nil {
-        panic("图片添加失败，"+"path："+path+"，pos："+pos)
+       panic("图片添加失败，"+"path："+path+"，pos："+pos+"，错误："+errAddPic.Error())
     }
 
 }
