@@ -2,6 +2,8 @@ github.com/360EntSecGroup-Skylar/excelize/v2 v2.3.2 h1:MHu5KWWt28FzRGQgc4Ryj/lZT
 github.com/360EntSecGroup-Skylar/excelize/v2 v2.3.2/go.mod h1:xc0ybJZXcn084ZaIvQv+LfCDQjMWfxkBa2K9nLXYJtI=
 github.com/360EntSecGroup-Skylar/excelize/v2 v2.4.1-0.20210429161442-7e429c5b464b h1:QQf/EMUM2Gn7OTiRd9S8t62QKM77ZbgX2OGDxLCYXnQ=
 github.com/360EntSecGroup-Skylar/excelize/v2 v2.4.1-0.20210429161442-7e429c5b464b/go.mod h1:p9lGPoVX3HYEbFRfjgrPWaaKsHe/2u4EM9DB/qoctgU=
+github.com/360EntSecGroup-Skylar/excelize/v2 v2.4.1-0.20210515160309-5bf3ea61547d h1:3REDsO9vruCTQKIpZIE85Zd/4vQYNkXJi440M9K47wc=
+github.com/360EntSecGroup-Skylar/excelize/v2 v2.4.1-0.20210515160309-5bf3ea61547d/go.mod h1:p9lGPoVX3HYEbFRfjgrPWaaKsHe/2u4EM9DB/qoctgU=
 github.com/buger/jsonparser v1.1.1 h1:2PnMjfWD7wBILjqQbt530v576A/cAbQvEW9gGIpYMUs=
 github.com/buger/jsonparser v1.1.1/go.mod h1:6RYKKt7H4d4+iWqouImQ9R2FZql3VbhNgx27UK13J/0=
 github.com/davecgh/go-spew v1.1.0 h1:ZDRjVQ15GmhC3fiQ8ni8+OwkZQO4DARzQgrnXU1Liz8=
