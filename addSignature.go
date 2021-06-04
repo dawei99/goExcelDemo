@@ -44,6 +44,6 @@ func addSignatureHandle(info addSignatureParams, finishNotice chan int) {
     if errAddPic := fileHandle.AddPicture(firstSheetName, pos, path, `{ "x_scale": 1,"y_scale": 1,"positioning": "absolute","x_offset": 1,"y_offset": 1}`) ; errAddPic != nil {
        panic("签章添加失败，"+"path："+path+"，pos："+pos+"，错误："+errAddPic.Error())
     }
-fmt.Println(pos, path)
+
 }
 

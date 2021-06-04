@@ -83,11 +83,11 @@ func main () {
 
     // 处理签章图片
     addSignatureParam.path = signaturePath
-    <-finishNoticeHandle // 等待任务完成
+    if (total_number > 0) {
+        <-finishNoticeHandle // 等待任务完成
+    }
 
     addSignatureHandle(addSignatureParam, finishNoticeHandle)
-
-
 
     // 保存图像
     errSave := file.Save()
