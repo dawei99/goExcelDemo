@@ -26,17 +26,31 @@ func main () {
 
     var firstSheetName string = file.GetSheetMap()[1] // 工作薄名称
 
+    // 设置参数
     var (
         addImageParam AddImageParams // 插入图片需传递参数
         addTextParam AddTextParams // 插入文本需传递参数
+        addSignatureParam addSignatureParams // 签章操作参数
     )
-    total_number = gjson.Get(parseData, "images.#").Int() + gjson.Get(parseData, "text.#").Int() // 任务总数
     addImageParam.fileHandle = file
     addTextParam.fileHandle = file
+
     addImageParam.firstSheetName = firstSheetName
     addTextParam.firstSheetName = firstSheetName
 
-    finishNoticeHandle := make(chan int) // 全部完成通知管道
+    addSignatureParam.firstSheetName = firstSheetName
+    addSignatureParam.fileHandle = file
+
+    // 任务总数
+    total_number = gjson.Get(parseData, "images.#").Int() + gjson.Get(parseData, "text.#").Int()
+    signaturePath := gjson.Get(parseData, "signature").String()// 签章图片
+    // 添加签章任务
+    if signaturePath != "" {
+        total_number++
+    }
+
+    // 全部完成通知管道
+    finishNoticeHandle := make(chan int)
 
     // 插入图片操作
     gjson.Get(parseData, "images").ForEach(func (i, gResult gjson.Result) bool {
@@ -64,6 +78,11 @@ func main () {
         }
         return true
     })
+
+    // 处理签章图片
+    addSignatureParam.path = signaturePath
+    go addSignatureHandle(addSignatureParam, finishNoticeHandle)
+
     <-finishNoticeHandle // 等待任务完成
 
     // 保存图像
