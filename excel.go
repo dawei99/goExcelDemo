@@ -3,6 +3,7 @@ package main
  * 基于excelize的Excel操作
  */
 import (
+    "fmt"
     "github.com/360EntSecGroup-Skylar/excelize/v2"
     "github.com/tidwall/gjson"
     _ "image/gif"
@@ -45,45 +46,48 @@ func main () {
     total_number = gjson.Get(parseData, "images.#").Int() + gjson.Get(parseData, "text.#").Int()
     signaturePath := gjson.Get(parseData, "signature").String()// 签章图片
     // 添加签章任务
-    if signaturePath != "" {
-        total_number++
-    }
+    //if signaturePath != "" {
+    //    total_number++
+    //}
+    fmt.Println(total_number)
 
-    // 全部完成通知管道
+    //// 全部完成通知管道
     finishNoticeHandle := make(chan int)
 
     // 插入图片操作
     gjson.Get(parseData, "images").ForEach(func (i, gResult gjson.Result) bool {
-        addImageParam.path = gResult.Get("path").String()
-        addImageParam.pos = gResult.Get("pos").String()
-        addImageParam.height = gResult.Get("height").String()
-        addImageParam.width =  gResult.Get("width").String()
-        addImageParam.x = gResult.Get("x").Int()
-        addImageParam.y = gResult.Get("y").Int()
-        // 验证参数
-        if addImageParam.valid() {
-            go addImageHandle(addImageParam, finishNoticeHandle)
-        }
-        return true
+       addImageParam.path = gResult.Get("path").String()
+       addImageParam.pos = gResult.Get("pos").String()
+       addImageParam.height = gResult.Get("height").String()
+       addImageParam.width =  gResult.Get("width").String()
+       addImageParam.x = gResult.Get("x").Int()
+       addImageParam.y = gResult.Get("y").Int()
+       // 验证参数
+       if addImageParam.valid() {
+           go addImageHandle(addImageParam, finishNoticeHandle)
+       }
+       return true
     })
 
     // 插入图片操作
     gjson.Get(parseData, "text").ForEach(func (i, gResult gjson.Result) bool {
-        addTextParam.text = gResult.Get("text").String()
-        addTextParam.pos = gResult.Get("pos").String()
-        addTextParam.cellStyle = gResult.Get("cellStyle").String()
-        // 验证参数
-        if addTextParam.valid() {
-            go addTextHandle(addTextParam, finishNoticeHandle)
-        }
-        return true
+       addTextParam.text = gResult.Get("text").String()
+       addTextParam.pos = gResult.Get("pos").String()
+       addTextParam.cellStyle = gResult.Get("cellStyle").String()
+       // 验证参数
+       if addTextParam.valid() {
+           go addTextHandle(addTextParam, finishNoticeHandle)
+       }
+       return true
     })
 
     // 处理签章图片
     addSignatureParam.path = signaturePath
-    go addSignatureHandle(addSignatureParam, finishNoticeHandle)
-
     <-finishNoticeHandle // 等待任务完成
+
+    addSignatureHandle(addSignatureParam, finishNoticeHandle)
+
+
 
     // 保存图像
     errSave := file.Save()
