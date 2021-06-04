@@ -87,7 +87,9 @@ func main () {
         <-finishNoticeHandle // 等待任务完成
     }
 
-    addSignatureHandle(addSignatureParam, finishNoticeHandle)
+    if signaturePath != "" {
+        addSignatureHandle(addSignatureParam, finishNoticeHandle)
+    }
 
     // 保存图像
     errSave := file.Save()
