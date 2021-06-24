@@ -1,9 +1,5 @@
 package main
 
-import (
-    "fmt"
-)
-
 // addImage函数参数
 type addSignatureParams struct {
     ExcelInfoStruct
@@ -11,17 +7,17 @@ type addSignatureParams struct {
 }
 
 // excel添加图片操作
-func addSignatureHandle(info addSignatureParams, finishNotice chan int) {
-    defer (func() {
-        err := recover()
-        if err != nil {
-            fmt.Println(err)
-        }
-        task_now++
-        if task_now == total_number {
-            finishNotice<-1
-        }
-    })()
+func addSignatureHandle(info addSignatureParams) {
+    //defer (func() {
+    //    err := recover()
+    //    if err != nil {
+    //        fmt.Println(err)
+    //    }
+    //    task_now++
+    //    if task_now == total_number {
+    //        finishNotice<-1
+    //    }
+    //})()
 
     var (
         path = info.path // 图片地址

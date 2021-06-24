@@ -1,6 +1,6 @@
 package main
+
 import (
-    "fmt"
     "regexp"
     "strconv"
 )
@@ -25,17 +25,17 @@ func (a *AddImageParams) valid () bool {
 }
 
 // excel添加图片操作
-func addImageHandle(info AddImageParams, finishNotice chan int) {
-    defer (func() {
-        err := recover()
-        if err != nil {
-            fmt.Println(err)
-        }
-        task_now++
-        if task_now == total_number {
-            finishNotice<-1
-        }
-    })()
+func addImageHandle(info AddImageParams) {
+    //defer (func() {
+    //    err := recover()
+    //    if err != nil {
+    //        fmt.Println(err)
+    //    }
+    //    task_now++
+    //    if task_now == total_number {
+    //        finishNotice<-1
+    //    }
+    //})()
 
     var (
         width = info.width  // 宽度
@@ -73,10 +73,11 @@ func addImageHandle(info AddImageParams, finishNotice chan int) {
 
     // 删除已有图片
     fileHandle.DeletePicture(firstSheetName, pos)
+    //fmt.Println(pos)
 
     // 添加图片
     if errAddPic := fileHandle.AddPicture(firstSheetName, pos, path, `{ "x_scale": 1,"y_scale": 1,"positioning": "absolute","x_offset": `+strconv.FormatInt(x, 10)+`,"y_offset": `+strconv.FormatInt(y, 10)+`}`) ; errAddPic != nil {
-       panic("图片添加失败，"+"path："+path+"，pos："+pos+"，错误："+errAddPic.Error())
+      panic("图片添加失败，"+"path："+path+"，pos："+pos+"，错误："+errAddPic.Error())
     }
 
 }

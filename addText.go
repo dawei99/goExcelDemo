@@ -1,8 +1,5 @@
 package main
 
-import (
-    "fmt"
-)
 // addText函数参数
 type AddTextParams struct {
     ExcelInfoStruct
@@ -17,17 +14,17 @@ func (a *AddTextParams) valid () bool {
     return true
 }
 // excel添加文本
-func addTextHandle(info AddTextParams, finishNotice chan int) {
-    defer (func() {
-        err := recover()
-        if err != nil {
-            fmt.Println(err)
-        }
-        task_now++
-        if task_now == total_number {
-            finishNotice<-1
-        }
-    })()
+func addTextHandle(info AddTextParams) {
+    //defer (func() {
+    //    err := recover()
+    //    if err != nil {
+    //        fmt.Println(err)
+    //    }
+    //    task_now++
+    //    if task_now == total_number {
+    //        finishNotice<-1
+    //    }
+    //})()
 
     var (
        fileHandle = info.fileHandle  // excel操作句柄

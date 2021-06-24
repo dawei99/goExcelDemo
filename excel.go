@@ -52,7 +52,7 @@ func main () {
     fmt.Println(total_number)
 
     //// 全部完成通知管道
-    finishNoticeHandle := make(chan int)
+    //finishNoticeHandle := make(chan int)
 
     // 插入图片操作
     gjson.Get(parseData, "images").ForEach(func (i, gResult gjson.Result) bool {
@@ -63,9 +63,10 @@ func main () {
        addImageParam.x = gResult.Get("x").Int()
        addImageParam.y = gResult.Get("y").Int()
        // 验证参数
-       if addImageParam.valid() {
-           go addImageHandle(addImageParam, finishNoticeHandle)
-       }
+       //if addImageParam.valid() {
+           //go addImageHandle(addImageParam)
+            addImageHandle(addImageParam)
+       //}
        return true
     })
 
@@ -76,19 +77,19 @@ func main () {
        addTextParam.cellStyle = gResult.Get("cellStyle").String()
        // 验证参数
        if addTextParam.valid() {
-           go addTextHandle(addTextParam, finishNoticeHandle)
+           addTextHandle(addTextParam)
        }
        return true
     })
 
     // 处理签章图片
     addSignatureParam.path = signaturePath
-    if (total_number > 0) {
-        <-finishNoticeHandle // 等待任务完成
-    }
+    //if (total_number > 0) {
+    //    <-finishNoticeHandle // 等待任务完成
+    //}
 
     if signaturePath != "" {
-        addSignatureHandle(addSignatureParam, finishNoticeHandle)
+        addSignatureHandle(addSignatureParam)
     }
 
     // 保存图像

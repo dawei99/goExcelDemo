@@ -6,3 +6,5 @@ exec
 tmp.go
 tmp/
 *.xlsx
+static/
+excel2pdf/
